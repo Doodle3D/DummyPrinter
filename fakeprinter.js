@@ -41,6 +41,16 @@ process.stdin.on('keypress', function (ch, key) {
     nspPrinterRoot.emit("printerState", {state: "idle"});
     nspPrinterPrinter.emit("state", {state: "idle"});
   }
+  if (key.name == 'd') {
+    console.log("nspPrinterRoot disconnect");
+    nspPrinterRoot.disconnect();
+    // nspPrinterPrinter.disconnect();
+  }
+
+  if (key.name == 'r') {
+    console.log("nspPrinterRoot + nspPrinterPrinter reconnect");
+    connect();
+  }
 
   if (key.ctrl && key.name == 'c') {
     process.exit();
@@ -51,28 +61,33 @@ process.stdin.on('keypress', function (ch, key) {
 
 process.stdin.setRawMode(true);
 process.stdin.resume();
+connect();
 
+function connect() {
 
-printer.connectTo("/"+printerID,printerKey,{forceNew:true},function(err,nsp) {
-  if(err) throw new Error(err);
-  nspPrinterRoot = nsp;
+  printer.connectTo("/"+printerID,printerKey,{forceNew:true},function(err,nsp) {
+    if(err) throw new Error(err);
+    nspPrinterRoot = nsp;
 
-  console.log("fake /"+printerID + " emit printerState & clientSSID");
+    console.log("fake /"+printerID + " emit printerState & clientSSID");
 
-  nsp.emit("printerState", {state: "idle"});
-  nsp.emit("clientSSID",{ssid:"Vechtclub XL F1.19"});
-  
+    nsp.emit("printerState", {state: "idle"});
+    nsp.emit("clientSSID",{ssid:"Vechtclub XL F1.19"});
+  });  
 
-});  
+  printer.connectTo("/"+printerID+"-printer",printerKey,{forceNew:true},function(err,nsp) {
+    if(err) throw new Error(err);
+    nspPrinterPrinter = nsp;
 
-// printer.connectTo("/"+printerID+"-printer",printerKey,{forceNew:true},function(err,nsp) {
-//   if(err) throw new Error(err);
-//   nspPrinterPrinter = nsp;
+    nsp.on("print",function(data,callback) {
+      console.log("onPrint")
+    });
+  });
+}
+
 
 //   /// FIXME
 //   // nsp.emit("state", {state: "idle"});
 //   // nsp.emit("clientSSID",{ssid:"Vechtclub XL F1.19"});
-//   // nsp.on("print",function(data,callback) {
-//   //   console.log("onPrint")
-//   // });
+//   // 
 // });
