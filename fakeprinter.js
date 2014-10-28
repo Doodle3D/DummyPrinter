@@ -79,8 +79,8 @@ function connect() {
     if(err) throw new Error(err);
     nspPrinterPrinter = nsp;
 
-    nsp.on("print",function(data,cb) {
-      console.log("onPrint",data)
+    nsp.on("print",function(data,cb,stream) {
+      console.log("onPrint",data,cb,stream);
       if (cb) cb(null,"ok");
     });
   });
