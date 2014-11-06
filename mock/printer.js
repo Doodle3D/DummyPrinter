@@ -12,7 +12,7 @@ function Printer(cloudURL) {
   this.id = "";
   this.key = "";
   this.name = "Ultimaker-test01";
-  this.features = ["printer","network","debug","update","config","webcam","slice"];
+  this.features = ["printer","network","debug","update","config","webcam","slicer"];
 
 
   this.register = function(callback) {

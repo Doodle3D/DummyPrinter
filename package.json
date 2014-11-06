@@ -9,9 +9,11 @@
   "license": "ISC",
   "dependencies": {
     "debug": "^2.1.0",
+    "fs": "0.0.2",
     "keypress": "^0.2.1",
     "request": "^2.47.0",
-    "socket.io-client": "^1.2.0"
+    "socket.io-client": "^1.2.0",
+    "socket.io-stream": "git+https://github.com/nkzawa/socket.io-stream.git#4fafe53a36ba65c2ee4fb0372726afa497fda99d"
   },
   "devDependencies": {}
 }
