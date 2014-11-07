@@ -13,7 +13,7 @@ var printerKey;
 var nspPrinterRoot;
 var nspPrinterPrinter;
 var nspPrinterWebcam;
-var webcamEnabled = false;
+// var webcamEnabled = false;
 
 var printerKey = '543bc6638b6a35696f459cdcdS0kgkKzSg2IehJke9uM';
 var printerID = '543bc6638b6a35696f459cdc';
@@ -60,7 +60,12 @@ process.stdin.on('keypress', function (ch, key) {
   if (key.name == 'd') {
     console.log("nspPrinterRoot disconnect");
     nspPrinterRoot.disconnect();
-    // nspPrinterPrinter.disconnect();
+    nspPrinterPrinter.disconnect();
+    nspPrinterWebcam.disconnect();
+
+    // nspPrinterRoot = null;
+    // nspPrinterPrinter = null;
+    // nspPrinterWebcam = null;
   }
 
   if (key.name == 'r') {
@@ -111,24 +116,21 @@ function connect() {
     if (err) throw new Error(err);
     nspPrinterWebcam = nsp;
 
-    nsp.on("start", function() {
-      console.log("start webcam");
-      webcamEnabled = true;
-    });
+    // nsp.on("start", function() {
+    //   console.log("start webcam");
+    //   webcamEnabled = true;
+    // });
 
-    nsp.on("stop", function() {
-      console.log("stop webcam");
-      webcamEnabled = false;
-    });
+    // nsp.on("stop", function() {
+    //   console.log("stop webcam");
+    //   webcamEnabled = false;
+    // });
 
   });
 }
 
-setInterval(function() {
-  
-  if (!nspPrinterPrinter) return;
-
-  if (!webcamEnabled) return;
+setInterval(function() {  
+  // if (!nspPrinterWebcam.connected) return;
 
   console.log('tick cam');
   var snapshot = spawn('imagesnap', ['-'])
