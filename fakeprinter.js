@@ -4,9 +4,9 @@ var spawn = require('child_process').spawn
 var ss = require('socket.io-stream');
 var fs = require('fs');
 
-var PORT = process.env.PORT ? process.env.PORT : 5000;
+// var PORT = process.env.PORT ? process.env.PORT : 5000;
 
-var CLOUD_URL = "http://cloud.doodle3d.com:"+PORT;
+var CLOUD_URL = "https://cloud.doodle3d.com"; //:"+PORT;
 var printer = require("./mock/printer")(CLOUD_URL);
 var printerID;
 var printerKey;
@@ -15,8 +15,8 @@ var nspPrinterPrinter;
 var nspPrinterWebcam;
 // var webcamEnabled = false;
 
-var printerKey = '543bc6638b6a35696f459cdcdS0kgkKzSg2IehJke9uM';
-var printerID = '543bc6638b6a35696f459cdc';
+var printerKey = '545f791422ed476034457a86rWKh8rkXIcQMDWK5zD8R';
+var printerID = '545f791422ed476034457a86';
 
 // printer.register(function(err,printerKey,printerID) {
 //   console.log(err,printerKey,printerID);
@@ -58,18 +58,11 @@ process.stdin.on('keypress', function (ch, key) {
     setState('idle');
   }
   if (key.name == 'd') {
-    console.log("nspPrinterRoot disconnect");
-    nspPrinterRoot.disconnect();
-    nspPrinterPrinter.disconnect();
-    nspPrinterWebcam.disconnect();
-
-    // nspPrinterRoot = null;
-    // nspPrinterPrinter = null;
-    // nspPrinterWebcam = null;
+    disconnect();
   }
 
   if (key.name == 'r') {
-    console.log("nspPrinterRoot + nspPrinterPrinter reconnect");
+    disconnect();
     connect();
   }
 
@@ -80,7 +73,15 @@ process.stdin.on('keypress', function (ch, key) {
   // process.stdout.write(key);
 });
 
+function disconnect() {
+  console.log("disconnect");
+  nspPrinterRoot.disconnect();
+  nspPrinterPrinter.disconnect();
+  nspPrinterWebcam.disconnect();
+}
+
 function connect() {
+  console.log("connect");
 
   printer.connectTo("/"+printerID,printerKey,{forceNew:true},function(err,nsp) {
     if(err) throw new Error(err);
@@ -90,7 +91,7 @@ function connect() {
 
     // nsp.emit("printerState", {state: "idle"});
     setState('idle');
-    nsp.emit("clientSSID",{ssid:"Vechtclub XL F1.19"});
+    nsp.emit("wifiSSID",{ssid:"Vechtclub XL F1.19"});
   });  
 
   printer.connectTo("/"+printerID+"-printer",printerKey,{forceNew:true},function(err,nsp) {
@@ -130,6 +131,8 @@ function connect() {
 }
 
 setInterval(function() {  
+  // console.log('webcam disabled');
+  return;
   // if (!nspPrinterWebcam.connected) return;
 
   console.log('tick cam');
