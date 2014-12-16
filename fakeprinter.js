@@ -161,7 +161,7 @@ function connect() {
   //   nspPrinterWebcam = nsp;
   // });
 
-  connectWebcam();
+  // connectWebcam();
 }
 
 function connectWebcam() {
