@@ -97,6 +97,14 @@ process.stdin.on('keypress', function (ch, key) {
   //   toggleWebcam();
   // } 
 
+  if (key.name == 'h') {
+	  console.log("DummyPrinter help");
+	  console.log("'p'		start printing");
+	  console.log("'q'		stop printing");
+	  console.log("'s'		increase slice progress by 0.5%");
+	  console.log("'ctrl-c'	exit program");
+  }
+
   // process.stdout.write(key);
 });
 
